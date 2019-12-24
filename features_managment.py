@@ -1,6 +1,7 @@
 import re
 import os
 import lxml.etree as et
+import shutil
 
 from .aux_functions import *
 from collections import Counter
@@ -131,11 +132,13 @@ def read_smali_files(smali_list, api_packages_list, api_classes_list):
 
 
 def read_strings_and_apicalls(analyze_apk, api_packages_list, api_classes_list):
-    unzip_apk(analyze_apk)
+    directory = unzip_apk(analyze_apk)
 
     smali_files_list = list_files(analyze_apk.replace('.apk', '/'), '*.smali')
 
     list_smali_api_calls, list_smali_strings = read_smali_files(smali_files_list, api_packages_list, api_classes_list)
+
+    shutil.rmtree(directory)
 
     return list_smali_api_calls, list_smali_strings
 
@@ -146,7 +149,6 @@ def read_system_commands(list_smali_strings, api_system_commands):
     for elem in filter(None, list_smali_strings):
         command_to_check_list = elem.split(' ')
         if command_to_check_list[0] in api_system_commands:
-            if command_to_check_list[0] not in list_system_commands:
-                list_system_commands.append(command_to_check_list[0])
+            list_system_commands.append(command_to_check_list[0])
 
     return list_system_commands

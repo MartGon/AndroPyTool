@@ -44,7 +44,7 @@ class AndroPyAPI:
     def _get_system_commands(self, apk, list_smali_strings):
         
         list_system_commands = read_system_commands(list_smali_strings, self.api_system_commands)
-        return list_system_commands
+        return Counter(list_system_commands)
 
     def _get_api_calls(self, apk, list_smali_api_calls):
         

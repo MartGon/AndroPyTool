@@ -27,6 +27,8 @@ def unzip_apk(analyze_apk):
         p = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         output, err = p.communicate()
 
+    return directory
+
 
 def cleanup(analyze_apk):
     # directory = source_directory + os.path.basename(filename).replace('.apk', '')
