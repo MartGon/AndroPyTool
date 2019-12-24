@@ -4,6 +4,7 @@ import json
 import fnmatch
 import subprocess
 
+APK_TOOL_REL_PATH = 'Libraries/apktool.jar'
 
 def list_files(directory, string):
     result = []
@@ -16,11 +17,12 @@ def list_files(directory, string):
 def unzip_apk(analyze_apk):
     # directory = source_directory + os.path.basename(filename).replace('.apk', '')
     directory = analyze_apk.replace('.apk', '/')
-    print(directory)
     if not os.path.exists(directory):
-    
-        command = "java -jar Libraries/apktool.jar d " + analyze_apk + " -o " + directory + " -f"
-        print(command)
+        module_path = os.path.abspath(__file__)
+        module_dir = os.path.dirname(module_path)
+        apktool_path = os.path.join(module_dir, APK_TOOL_REL_PATH)
+
+        command = "java -jar " + apktool_path + " d " + analyze_apk + " -o " + directory + " -f"
 
         p = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         output, err = p.communicate()
